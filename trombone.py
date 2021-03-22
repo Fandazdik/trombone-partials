@@ -15,11 +15,17 @@ notes = {
     11: ('D#', 'Eb')
 }
 
+partial_inc = [(0, 1), (7, 2), (12, 3), (16, 4), (19, 5), (21, 6)] #, (23, 7), (25, 8), (27, 9), (29, 10), (30, 11)]
+
+
 def get_note_positions(input_position, any_octave = False):
+    
+    global partial_inc
+    
     final_position_list = []
     for position in range(1, 8):
         root_number = 7 - position
-        for add_interval in [(0, 1), (7, 2), (12, 3), (16, 4), (19, 5)]:
+        for add_interval in partial_inc:
             unmodded_note = root_number + add_interval[0]
             if any_octave:
                 if unmodded_note % 12 == input_position:
@@ -30,9 +36,12 @@ def get_note_positions(input_position, any_octave = False):
     return final_position_list #Returns (position, partial)
 
 def get_note(input_note):
+    
+    global partial_inc
+    
     for position in range(1, 8):
         root_number = 7 - position
-        for add_interval in [(0, 1), (7, 2), (12, 3), (16, 4), (19, 5)]:
+        for add_interval in partial_inc:
             unmodded_note = root_number + add_interval[0]
             if unmodded_note == input_note:
                 return position, add_interval[1]
@@ -56,7 +65,7 @@ def to_note(input_note, mode = '#'): # or 'b'
 
 def to_num(input_note): # inverse of to_note
     note = input_note[:-1]
-    octave = input_note[-1:]
+    octave = input_note[1:]
     
     counter = 0
     for note_names in notes.values(): # To deal with tuples
